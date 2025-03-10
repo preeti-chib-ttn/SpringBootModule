@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/day-2/user")
-@Tag(name = "User API", description = "crud api for user with support for xml and swagger description")
+@Tag(name = "Day 2 - User APIs", description = " CRUD API for user with support for xml and swagger description")
 
 public class UserController {
 
