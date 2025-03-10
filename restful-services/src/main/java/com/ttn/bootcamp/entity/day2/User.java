@@ -2,7 +2,6 @@ package com.ttn.bootcamp.entity.day2;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name="Users")
