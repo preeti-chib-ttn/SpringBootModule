@@ -15,7 +15,7 @@ import java.util.Locale;
 
 @RestController
 @RequestMapping("/day-2/i18n")
-public class Internationalization {
+public class I18nController {
 
     @Autowired
     private MessageSource messageSource;

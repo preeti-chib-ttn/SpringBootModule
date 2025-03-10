@@ -6,12 +6,13 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name="Users")
-//@XmlRootElement
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private long id;
+
+    @Column(unique = true, nullable = false)
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
