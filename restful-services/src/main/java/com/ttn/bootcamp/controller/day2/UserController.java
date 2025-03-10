@@ -1,5 +1,6 @@
 package com.ttn.bootcamp.controller.day2;
 
+import com.ttn.bootcamp.dto.day2.ChangePasswordRequest;
 import com.ttn.bootcamp.entity.day2.User;
 import com.ttn.bootcamp.serivce.day2.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,12 +10,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import  static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/day-2/user")
@@ -42,12 +47,7 @@ public class UserController {
         return userService.getAllUser();
     }
 
-    @GetMapping("/{username}")
-    @Operation(summary = "Get user with username",
-            description = "Fetches user with given username.")
-    public User getUserByUsername(@PathVariable String username) {
-        return userService.getUserByUsername(username);
-    }
+
 
     @DeleteMapping("/{username}")
     @Operation(summary = "Delete user",
@@ -74,5 +74,38 @@ public class UserController {
     public MappingJacksonValue getUsersCustomFields(@RequestParam List<String> fields) {
         return userService.getUserWithDynamicFilter(fields);
     }
+
+
+    @PatchMapping("/{username}/change-password")
+    @Operation(
+            summary = "Change user password",
+            description = "Updates the user's password"
+    )
+    public ResponseEntity<String> changePassword(
+            @PathVariable String username,
+            @RequestBody ChangePasswordRequest request) {
+        userService.changeUserPassword(username, request.getOldPassword(), request.getNewPassword());
+        return ResponseEntity.ok("Password updated successfully!");
+    }
+
+
+    @GetMapping("/{username}")
+    @Operation(summary = "Get user with username",
+            description = "Fetches user with given username.<br>" +
+                    "Contain hateoas links for get all user and change user password")
+    public EntityModel<User> getUserByUsername(@PathVariable String username) {
+        User user= userService.getUserByUsername(username);
+
+        EntityModel<User> entityModel= EntityModel.of(user);
+
+        WebMvcLinkBuilder changePasswordLink= linkTo(methodOn(this.getClass())
+                .changePassword(username,new ChangePasswordRequest()));
+        WebMvcLinkBuilder allUsersLink = linkTo(methodOn(this.getClass()).getAllUsersFullDetails());
+        entityModel.add(allUsersLink.withRel("user-all"));
+        entityModel.add(changePasswordLink.withRel("user-change-password"));
+
+        return entityModel;
+    }
+
 
 }

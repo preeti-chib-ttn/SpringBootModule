@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.ttn.bootcamp.entity.day2.User;
+import com.ttn.bootcamp.exception.InvalidPasswordException;
 import com.ttn.bootcamp.exception.UserAlreadyExistsException;
 import com.ttn.bootcamp.exception.UserNotFoundException;
 import com.ttn.bootcamp.repository.day2.UserRepository;
@@ -61,6 +62,17 @@ public class UserService {
         MappingJacksonValue mapping = new MappingJacksonValue(users);
         mapping.setFilters(filters);
         return  mapping;
+    }
 
+
+    public void changeUserPassword(String username, String oldPassword, String newPassword) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (!user.getPassword().equals(oldPassword)) {
+            throw new InvalidPasswordException("Old password is incorrect");
+        }
+        // without encryption for assignment
+        user.setPassword(newPassword);
+        userRepository.save(user);
     }
 }
