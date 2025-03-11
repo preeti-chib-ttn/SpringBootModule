@@ -1,13 +1,18 @@
-package com.ttn.bootcamp.entity.day1;
+package com.ttn.bootcamp.Dao;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Employee {
 
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer id;
     private String name;
     private Integer age;
 
-    public Employee(Integer age, String name, Integer id) {
+    public Employee(Integer id, String name, Integer age) {
         this.age = age;
         this.name = name;
         this.id = id;
@@ -36,6 +41,7 @@ public class Employee {
     public void setId(Integer id) {
         this.id = id;
     }
+
 
     @Override
     public String toString() {

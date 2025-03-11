@@ -1,7 +1,8 @@
 package com.ttn.bootcamp.serivce.day1;
 
 
-import com.ttn.bootcamp.entity.day1.Employee;
+import com.ttn.bootcamp.Dao.Employee;
+import com.ttn.bootcamp.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public class EmployeeDaoService {
 
     private static List<Employee> employees = new ArrayList<>();
 
-    private static int employeesCount = 0;
+    private static Integer employeesCount= 0;
 
     static {
         employees.add(new Employee(++employeesCount,"Preeti",23));
@@ -32,13 +33,23 @@ public class EmployeeDaoService {
         return employee;
     }
 
-    public Employee findOne(int id) {
+    public Employee findOne(Integer id) {
         Predicate<? super Employee> predicate = employee -> employee.getId().equals(id);
-        return employees.stream().filter(predicate).findFirst().orElse(null);
+        return employees.stream().filter(predicate).findFirst().orElseThrow(() ->
+                new ResourceNotFoundException("Employee with id '" + id + "' not found"));
+
     }
 
     public void deleteById(int id) {
         Predicate<? super Employee> predicate = employee -> employee.getId().equals(id);
         employees.removeIf(predicate);
+    }
+
+    // Day 1 - Question 7
+    public Employee update(int id, Employee updatedEmployee) {
+        Employee employee = findOne(id);
+        employee.setName(updatedEmployee.getName());
+        employee.setAge(updatedEmployee.getAge());
+        return employee;
     }
 }

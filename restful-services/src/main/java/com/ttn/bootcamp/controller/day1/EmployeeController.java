@@ -1,6 +1,6 @@
 package com.ttn.bootcamp.controller.day1;
 
-import com.ttn.bootcamp.entity.day1.Employee;
+import com.ttn.bootcamp.Dao.Employee;
 import com.ttn.bootcamp.serivce.day1.EmployeeDaoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class EmployeeController {
 
     // Question 4
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@RequestParam int id){
+    public Employee getEmployeeById(@RequestParam Integer id){
         return employeeService.findOne(id);
     }
 
@@ -44,6 +44,11 @@ public class EmployeeController {
         return ResponseEntity.ok("Employee Deleted successfully");
     }
 
+    // Day 1 - Question 7
+    @PutMapping("/{id}")
+    public Employee updateEmployee(@RequestParam int id,@RequestBody Employee employee){
+        return employeeService.update(id,employee);
+    }
 
 
 }
