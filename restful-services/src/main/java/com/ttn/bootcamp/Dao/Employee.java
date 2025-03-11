@@ -1,15 +1,20 @@
 package com.ttn.bootcamp.Dao;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 
 public class Employee {
 
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer id;
+
+    @NotNull(message = "Employee name cannot be null")
+    @Size(min = 2, max = 100, message = "Employee name must be between 2 and 100 characters")
     private String name;
+
+    @Min(value = 16, message = "Employee minimum age must be 16")
+    @Max(value = 60, message = "Employee maximum age must be 60")
     private Integer age;
 
     public Employee(Integer id, String name, Integer age) {

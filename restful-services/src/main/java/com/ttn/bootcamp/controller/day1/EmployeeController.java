@@ -3,6 +3,7 @@ package com.ttn.bootcamp.controller.day1;
 import com.ttn.bootcamp.Dao.Employee;
 import com.ttn.bootcamp.serivce.day1.EmployeeDaoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class EmployeeController {
 
     // Question 5
     @PostMapping("/add")
-    public Employee addEmployee(@RequestBody Employee employee){
+    public Employee addEmployee(@RequestBody @Valid Employee employee){
         return employeeService.save(employee);
     }
 
@@ -46,9 +47,7 @@ public class EmployeeController {
 
     // Day 1 - Question 7
     @PutMapping("/{id}")
-    public Employee updateEmployee(@RequestParam int id,@RequestBody Employee employee){
+    public Employee updateEmployee(@RequestParam int id,@RequestBody @Valid Employee employee){
         return employeeService.update(id,employee);
     }
-
-
 }
