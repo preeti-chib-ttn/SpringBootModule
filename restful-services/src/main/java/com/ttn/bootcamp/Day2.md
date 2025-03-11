@@ -7,31 +7,31 @@
 ### B) Create a GET Request for Localized Greeting
 - Implement a GET request that takes `"username"` as a parameter and returns a localized message:  
   **"Hello, Username"** (using message properties).
-
+![Internationalization.png](../../../../resources/Output/Day2/Internationalization.png)
 ## 2. Content Negotiation
 ### A) Create a POST Method for User Creation
 - Implement a POST method that **accepts XML** input to create user details.
-
+![Xml.png](../../../../resources/Output/Day2/Xml.png)
 ### B) Create a GET Method to Fetch Users in XML
 - Implement a GET method that **returns the list of users in XML format**.
-
+![XmlAll.png](../../../../resources/Output/Day2/XmlAll.png)
 ## 3. Swagger Configuration
 ### A) Configure Swagger and Document APIs
 - Configure the **Swagger plugin** and generate API documentation for the following methods:
     - **GET**: Fetch user details
     - **POST**: Save user details
     - **DELETE**: Remove a user
-
+![AllUserApi.png](../../../../resources/Output/Day2/AllUserApi.png)
 ### B) Enhance Swagger Documentation
 - Add **descriptions** for each class and URI to clarify their purpose in Swagger UI.
-
+![Swagger Demo.png](../../../../resources/Output/Day2/Swagger%20Demo.png)
 ## 4. Static and Dynamic Filtering
 ### A) Static Filtering
 - Create an API that **saves user details (including password)** but returns only **non-sensitive data** in the response.
-
+![Password.png](../../../../resources/Output/Day2/Password.png)
 ### B) Dynamic Filtering
 - Implement another API that does the **same filtering dynamically** based on conditions.
-
+![DynamicDetails.png](../../../../resources/Output/Day2/DynamicDetails.png)
 ## 5. Versioning RESTful APIs
 - Create **two APIs** to return user details:
     - One returns **basic user details**.
@@ -46,3 +46,4 @@ D) **Custom Header Versioning**
 ## 6. HATEOAS
 ### A) Configure HATEOAS in Spring Boot
 - Implement an API that **returns user details along with links** to show all topics dynamically.  
+![Hateos.png](../../../../resources/Output/Day2/Hateos.png)
