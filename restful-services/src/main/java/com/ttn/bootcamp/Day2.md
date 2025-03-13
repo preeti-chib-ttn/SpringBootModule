@@ -1,7 +1,8 @@
 # Spring Boot RESTful Service - Day 2
 
 ## 1. Internationalization
-### A) Add support for Internationalization
+#
+## A) Add support for Internationalization
 - Configure the application to support messages in **English (default), German, and Swedish**.
 
 ### B) Create a GET Request for Localized Greeting
@@ -39,9 +40,20 @@
 
 ### Apply API Versioning Using:
 A) **MimeType Versioning**  
-B) **Request Parameter Versioning**  
+![MimeTypeV1.png](../../../../resources/Output/Day2/MimeTypeV1.png)
+![MimeTypeV2.png](../../../../resources/Output/Day2/MimeTypeV2.png)
+
+B) **Request Parameter Versioning**
+![RequestParamV1.png](../../../../resources/Output/Day2/RequestParamV1.png)
+![RequestParamV2.png](../../../../resources/Output/Day2/RequestParamV2.png)
+
 C) **URI Versioning**  
+![Uri version v1.png](../../../../resources/Output/Day2/Uri%20version%20v1.png)
+![URIVersionV2.png](../../../../resources/Output/Day2/URIVersionV2.png)
+
 D) **Custom Header Versioning**
+![HeaderVersionV1.png](../../../../resources/Output/Day2/HeaderVersionV1.png)
+![HeaderVersion2.png](../../../../resources/Output/Day2/HeaderVersion2.png)
 
 ## 6. HATEOAS
 ### A) Configure HATEOAS in Spring Boot

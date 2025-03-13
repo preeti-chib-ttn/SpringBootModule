@@ -89,20 +89,105 @@ public class UserController {
     }
 
 
+    /*
+    * URL versioning
+    * */
+
+    // Old implementation to get user
+    @GetMapping("/v1/{username}")
+    @Operation(summary = "Get user with username",
+            description = "Fetches user with given username.<br>" +
+                    "Contain hateoas links for get all user and change user password")
+    public User getUserByUsernameOldUrlVersion(@PathVariable String username) {
+        return userService.getUserByUsername(username);
+    }
+
+
+    // new implementation to get user with hateoas
+    @GetMapping("/v2/{username}")
+    @Operation(summary = "Get user with username",
+            description = "Fetches user with given username.<br>" +
+                    "Contain hateoas links for get all user and change user password")
+    public EntityModel<User> getUserByUsernameUrlVersion(@PathVariable String username) {
+        User user= userService.getUserByUsername(username);
+       return getEntityWithLinks(user,username);
+    }
+
+    /*
+     * Request Parameter Versioning
+     * */
+
     @GetMapping("/{username}")
     @Operation(summary = "Get user with username",
             description = "Fetches user with given username.<br>" +
                     "Contain hateoas links for get all user and change user password")
-    public EntityModel<User> getUserByUsername(@PathVariable String username) {
-        User user= userService.getUserByUsername(username);
+    public Object getUserByUsernameReqParamsVersion(@PathVariable String username, @RequestParam(name = "version") int version) {
+        User user = userService.getUserByUsername(username);
 
+        if (version == 1) {
+            return user;
+        } else if (version == 2) {
+            return getEntityWithLinks(user, username);
+        } else {
+            throw new IllegalArgumentException("Invalid version");
+        }
+    }
+
+    /*
+     * MimeType Versioning
+     * */
+
+    // Old implementation to get user using mimetype versioning
+    @GetMapping(value="/{username}/mime-type",produces = "application/vnd.company.app-v1+json")
+    @Operation(summary = "Get user with username",
+            description = "Fetches user with given username.<br>" +
+                    "Contain hateoas links for get all user and change user password")
+    public User getUserByUsernameOldMimeTypeVersion(@PathVariable String username) {
+        return userService.getUserByUsername(username);
+    }
+
+
+    // new implementation to get user with hateoas using mimetype versioning
+    @GetMapping(value="/{username}/mime-type",produces = "application/vnd.company.app-v2+json")
+    @Operation(summary = "Get user with username",
+            description = "Fetches user with given username.<br>" +
+                    "Contain hateoas links for get all user and change user password")
+    public EntityModel<User> getUserByUsernameMimeTypeVersion(@PathVariable String username) {
+        User user= userService.getUserByUsername(username);
+        return getEntityWithLinks(user,username);
+    }
+
+    /*
+     * Custom Header Versioning
+     * */
+
+    @GetMapping("/{username}/header")
+    @Operation(summary = "Get user with username",
+            description = "Fetches user with given username.<br>" +
+                    "Contain hateoas links for get all user and change user password")
+    public Object getUserByUsernameHeaderVersion(@PathVariable String username, @RequestHeader("X-API-VERSION") int version) {
+        User user = userService.getUserByUsername(username);
+
+        if (version == 1) {
+            return user;
+        } else if (version == 2) {
+            return getEntityWithLinks(user, username);
+        } else {
+            throw new IllegalArgumentException("Invalid version");
+        }
+    }
+
+    // function to get links for hateoas
+    private EntityModel<User> getEntityWithLinks(User user, String username){
         EntityModel<User> entityModel= EntityModel.of(user);
 
-        WebMvcLinkBuilder changePasswordLink= linkTo(methodOn(this.getClass())
-                .changePassword(username,new ChangePasswordRequest()));
+        if(username!=null) {
+            WebMvcLinkBuilder changePasswordLink= linkTo(methodOn(this.getClass())
+                    .changePassword(username,new ChangePasswordRequest()));
+            entityModel.add(changePasswordLink.withRel("user-change-password"));
+        }
         WebMvcLinkBuilder allUsersLink = linkTo(methodOn(this.getClass()).getAllUsersFullDetails());
         entityModel.add(allUsersLink.withRel("user-all"));
-        entityModel.add(changePasswordLink.withRel("user-change-password"));
 
         return entityModel;
     }
